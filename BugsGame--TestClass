@@ -1,0 +1,61 @@
+import java.util.Scanner;
+/**
+ * Write a description of class BuggerTester here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class BugsTester
+{
+    public static void main(String[] args)
+    {
+        Bugs Buggy = new Bugs(1, 1, 0);
+       
+        Buggy.printCurrentPosition();
+
+        int direction = 0;
+        boolean great = true;
+        String sentinel = "y";        
+        int num = 0;
+        while (sentinel.equals("y"))
+        {
+            Scanner in = new Scanner(System.in);
+            boolean cool = true;
+            while (cool == true)
+            {
+                System.out.println("Enter a direction for bug to move \n" +
+                    "0 for North, 1 for East, 2 for South, 3 for West");
+                if (in.hasNextInt())
+                {
+                    direction = in.nextInt();
+                    cool = false;
+                }
+                else 
+                {
+                    cool = true;
+                }
+            }
+            Buggy.turn(direction);
+                  boolean good = true;
+            while (good == true)
+            {
+                System.out.println("Enter units for bug to move");
+                if (in.hasNextInt())
+                {
+                    num = in.nextInt();
+                    good = false;
+                }
+                else
+                {
+                    good = true;
+                }
+            }
+            Buggy.move(num);
+            Buggy.printCurrentPosition();
+            System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+            System.out.println("Do you wanna move the bug again? y for yes, \n"+
+                "anything else for no");
+            sentinel = in.next();
+        }
+    }
+}
