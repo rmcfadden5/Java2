@@ -1,0 +1,128 @@
+import java.util.Scanner;
+/**
+ * Write a description of class seond here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class Bugs
+{
+    private int row;
+    private int column;
+    private int direction;
+    private char compass = 'N';
+    
+    
+    public Bugs()
+    {
+        int row = 1;
+        int column = 1;
+        int direction = 0;
+    }
+    
+    public Bugs(int row, int column, int direction)
+    {
+        this.row = row;
+        this.column = column;
+        this.direction = direction;
+    }
+
+    public int getRow()
+    {
+        return row;
+    }
+
+    public int getColumn()
+    {
+        return column;   
+    }
+
+    public int getDirection()
+    {
+        return direction;
+    }
+    
+    public void turn(int d)
+    {
+        direction = d;
+        if (direction == 0)
+        {
+           compass = 'N';   
+        }
+        else if (direction == 1)
+        {
+           compass = 'E'; 
+        }  
+        else if (direction == 2)
+        {
+            compass = 'S';
+        }
+        else if (direction == 3)
+        {
+            compass = 'W';
+        }
+    }
+    
+    public int move(int num)
+    {
+        if (direction == 0)
+        {
+             row = row - num;
+            if (row < 1)
+            {
+                System.out.println("You've hit the Northern Boundary");
+                return row = 1;
+            }
+            else { return row; }
+        }
+        else if (direction == 1)
+        {
+            column = column + num;            
+            if (column > 10)
+            {
+                System.out.println("You've hit the Eastern Boundary");
+                return column = 10;
+            }
+            else { return column; }
+        }
+        else if (direction == 2)
+        {
+            row = row + num;
+            if (row > 5)
+            {
+                System.out.println("You've hit the Southern Boundary");
+                return row = 5;
+            }
+            else { return row; }
+        }
+        else if (direction == 3)
+        {
+            column = column - num;           
+            if (column < 1)
+            {
+                System.out.println("You've hit the Western Boundary");
+                return column = 1;
+            }
+            else { return column; }
+        }
+       return 0;
+    }
+    public void printCurrentPosition()
+    {        
+        System.out.println("Bug's Current Position");
+        boolean nice = true;
+        for (int i = 1; i <= 5; i++)
+        {   nice = true;
+            for (int j = 1; j <= 10; j++)
+            {              
+                if (i == row && j == column)
+                {
+                   System.out.print(compass); j++;                  
+                }
+                if (j > 10) {nice = false; System.out.println(); break;}
+                else if (j < 10) { System.out.print("."); }                
+            }           
+            if (nice == true) {System.out.println(".");}
+        }
+    }
+}
