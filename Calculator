@@ -1,0 +1,129 @@
+import java.awt.event.*; 
+import javax.swing.*; 
+import java.awt.*; 
+import java.text.DecimalFormat;
+public class ESUCalculator extends JFrame implements ActionListener { 
+
+    private String math_exp = "";
+    //private JButton bd;
+    private JButton [] bts = new JButton[20];       //  two buttons .
+    // default constrcutor 
+    private JTextArea output;
+    public ESUCalculator() { 
+
+        // set ouput area
+        output = new JTextArea(1, 21); 
+        output.setPreferredSize(new Dimension(30, 40));
+        output.setFont(new Font("Arial", Font.PLAIN, 20));
+        //output.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        // create number buttons and some operators 
+        // create a button object
+
+        bts[0] = new JButton("(");
+        bts[1] = new JButton(")");
+        bts[2] = new JButton("%");
+        bts[3] = new JButton("CE");
+        bts[4] = new JButton("7");
+        bts[5] = new JButton("8");
+        bts[6] = new JButton("9");
+        bts[7] = new JButton("/");
+        bts[8] = new JButton("4");
+        bts[9] = new JButton("5");
+        bts[10] = new JButton("6");
+        bts[11] = new JButton("*");
+        bts[12] = new JButton("1");
+        bts[13] = new JButton("2");
+        bts[14] = new JButton("3");
+        bts[15] = new JButton("-");
+        bts[16] = new JButton("0");
+        bts[17] = new JButton(".");
+        bts[18] = new JButton("=");
+        bts[19] = new JButton("+");
+
+        // set button size
+        for(int i = 0; i < 20; i++)
+        {
+            bts[i].setPreferredSize(new Dimension(80, 40));
+            bts[i].setFont(new Font("Arial", Font.PLAIN, 20));
+            bts[i].addActionListener(this); 
+
+        }
+
+        // set font size for button
+        // set button background color
+        for(int i = 0; i < 20; i++)
+        {
+            if (i >= 0 & i <= 3)
+            {
+                bts[i].setBackground(new Color(204, 204, 204)); 
+            }
+            else if (i == 7 || i == 11 || i == 15 || i == 19)
+            {
+                bts[i].setBackground(new Color(204, 204, 204));
+            }
+        }
+        // add action listener
+
+        // make light blue color for second button
+        bts[18].setContentAreaFilled(false);
+        bts[18].setBorderPainted(true);
+        bts[18].setOpaque(true);
+        bts[18].setForeground(Color.WHITE);
+        bts[18].setBackground(new Color(51, 153, 255)); 
+
+        // create a panel 
+        JPanel p = new JPanel();
+
+        p.add(output);
+        for (int i = 0; i < 20; i++)
+        {
+            p.add(bts[i]);
+        }
+
+        // add panel to frame 
+        this.add(p); 
+
+        // set frame size
+        setSize(360, 320); 
+    } 
+
+    //Need to update mathexp and house if statements
+    public void actionPerformed(ActionEvent e) 
+    {
+        boolean ans = false;
+        String s = e.getActionCommand();
+        math_exp = math_exp + s;
+        
+        if(s.equals("CE"))
+        {
+            output.setText("");
+            math_exp = "";
+            ans = true;
+        }
+        
+        if(s.equals("="))
+        {
+            math_exp = math_exp.substring(0, math_exp.length()-1);
+            String postfix_exp = InfixToPostfix.toPostfix(math_exp);
+            System.out.println(postfix_exp);
+
+            PostFixCalculator pfc = new PostFixCalculator();
+            String post = pfc.good(postfix_exp);
+
+            ans = true;
+            output.append(s);
+            output.append(post);
+        }
+
+        if(ans == false)
+            output.append(s);
+        // String mathexp = output;
+        System.out.println("Button pressed: " + s);
+    } 
+
+    public String getMathExp()
+    {
+        return math_exp;
+    }
+} 
