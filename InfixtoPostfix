@@ -1,0 +1,124 @@
+import javax.swing.JFrame;
+import java.io.*;
+import java.util.Scanner;
+import java.awt.event.*; 
+import javax.swing.*; 
+import java.awt.*; 
+
+
+class Stack
+{
+    char a[]=new char[100];
+    int top=-1;
+
+    void push(char c)
+    {
+        try
+        {
+            a[++top]= c;
+        }
+        catch(StringIndexOutOfBoundsException e)
+        {
+            System.out.println("Stack full , no room to push , size=100");
+            System.exit(0);
+        }
+    }
+
+    char pop()
+    {
+        return a[top--];
+    }
+
+    boolean isEmpty()
+    {
+        return (top==-1)?true:false;
+    }
+
+    char peek()
+    {
+        return a[top];
+    }
+
+}   
+
+public class InfixToPostfix
+{
+    static Stack operators = new Stack();
+
+    public static String toPostfix(String infix)
+    //converts an infix expression to postfix
+    {
+        char symbol;
+        String postfix = "";
+        StringBuilder temp = new StringBuilder();   // temp string builder to hold a number
+
+        for(int i=0;i<infix.length();++i)
+        //while there is input to be read
+        {
+            symbol = infix.charAt(i);
+            //if it's an operand, add it to the string
+            if(Character.isDigit(symbol))
+            {
+                //read all digit next to it and append to temp
+                temp.append(symbol);
+                while((i+1) != infix.length() && 
+                (Character.isDigit(infix.charAt(i+1)) || infix.charAt(i+1) == '.'))
+                {
+                    temp.append(infix.charAt(++i));
+                }
+
+                /* If the loop ends it means the next token is an operator or end of expression
+                 * so we put temp into the postfix list and clear temp for next use
+                 */
+                if (!postfix.equals("")) {
+                    postfix += " ";
+                }
+                postfix += temp.toString();
+
+                temp.delete(0, temp.length());
+            }
+
+            else if (symbol=='(')
+            //push (
+            {
+                operators.push(symbol);
+            }
+            else if (symbol==')')
+            //push everything back to (
+            {
+                while (operators.peek() != '(')
+                {
+                    if (!postfix.equals("")) {
+                        postfix += " ";
+                    }
+                    postfix += operators.pop();
+                }
+                operators.pop();        //remove '('
+            }
+            else
+            //print operators occurring before it that have greater precedence
+            {
+                while (!operators.isEmpty() && !(operators.peek()=='(') && prec(symbol) <= prec(operators.peek()))
+                    postfix += " " + operators.pop();
+
+                operators.push(symbol);
+            }
+        }
+        while (!operators.isEmpty()) {
+            if (!postfix.equals("")) {
+                postfix += " ";
+            }
+            postfix += operators.pop();
+        }
+        return postfix;
+    }
+
+    public static int prec(char x)
+    {
+        if (x == '+' || x == '-')
+            return 1;
+        if (x == '*' || x == '/' || x == '%')
+            return 2;
+        return 0;
+    }
+}
