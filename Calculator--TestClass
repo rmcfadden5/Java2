@@ -1,0 +1,26 @@
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.util.Scanner;
+public class ESUCalculatorTester
+{
+    public static void main(String[] args)
+    {
+        ESUCalculator calculator = new ESUCalculator();
+        
+        JFrame frame = new ESUCalculator();
+
+        frame.setTitle("ESU Calculator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        
+        System.out.println("Enter a mathematic expression: ");
+        Scanner s = new Scanner(System.in);
+        String math_exp = s.nextLine();
+        String postfix_exp = InfixToPostfix.toPostfix(math_exp);
+        System.out.println(postfix_exp);
+                
+        PostFixCalculator pfc = new PostFixCalculator();
+        String answer = pfc.good(postfix_exp);
+        System.out.println(answer);
+    }
+}
