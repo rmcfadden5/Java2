@@ -1,0 +1,116 @@
+import java.util.Scanner;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.*;
+public class Prog
+{        
+    public static void main(String[] args)
+    {
+        ArrayList<Integer> bar = reader();               
+        findMax(bar);               //accepts the array list as argument
+        ArrayList<Integer> bar2 = barValues(bar);       
+        barVisualization(bar2);     //accepts the second array list as argument
+        barSorter(bar2);            //""
+        sortedVis(bar2);            //""
+    }
+
+    public static ArrayList<Integer> reader()
+    {
+        ArrayList<Integer> bar = new ArrayList<Integer>();
+        try
+        {
+            System.out.println("Input the file name including path: ");
+            Scanner in = new Scanner(System.in);
+            File file = new File(in.next());
+            in = new Scanner(file);            //Construct Scanner and File
+            while (in.hasNext())
+            {
+                int number = in.nextInt();
+                bar.add(number);          //add the values to the array list
+
+            }
+            in.close();
+        }
+        catch (Exception ex)
+        {                                //catch all exceptions
+            ex.printStackTrace();
+        }
+        System.out.println();
+        System.out.println("Original values: ");
+        System.out.println(bar);          //print original values
+        System.out.println();
+        return bar;
+    }
+
+    public static int findMax(ArrayList<Integer> bar)
+    {
+        int max = 0;
+        for (int value : bar)       //iterates through the first array list
+        {
+            if (value > max)         //Standard greatest value algorithim
+            {
+                max = value;   
+            }            
+        }
+        return max;
+    }
+
+    public static ArrayList<Integer> barValues(ArrayList<Integer> bar)
+    {        
+        int max = findMax(bar);             
+        System.out.println("Bar values: ");        
+        ArrayList<Integer> bar2 = new ArrayList<Integer>(bar);
+        int i = 0;
+        for (int value : bar2)               //iterates through the second
+        {                                    //array list
+            value = (value * 30)/max;
+            System.out.print(value + " ");   //Convert values to bar values
+            bar2.set(i, value);           //and overwrite them into second
+            i++;                          //array list
+        }
+        System.out.println("");
+        System.out.println("");
+        return bar2;
+    }
+
+    public static void barVisualization(ArrayList<Integer> bar2)
+    {
+        System.out.println("Bar Values Visualization:");
+        for (int value : bar2)            //iterates through the second array
+        {
+            for (int index = 1; index <= value; index++)
+            {            
+                System.out.print("*");   //prints the bar chart
+            }
+            System.out.print(" " + "(" + value + ")" );
+            System.out.println("");
+        }
+        System.out.println("");
+    }
+
+    public static void barSorter(ArrayList<Integer> bar2)
+    {
+        System.out.println("Sorted Bar Values:");
+        Collections.sort(bar2);         //method for sorting values
+        for (int value : bar2)       //iterates through the second array
+        {
+            System.out.print(value + " ");
+        }       
+        System.out.println("");
+        System.out.println("");
+    }
+
+    public static void sortedVis(ArrayList<Integer> bar2)
+    {
+        System.out.println("Sorted Bar Values:"); //prints the sorted chart
+        for (int value : bar2)        //iterates through the second  array
+        {               
+            for (int index3 = 1; index3 <= value; index3++)
+            {
+                System.out.print("*");
+            }
+            System.out.print(" " + "(" + value + ")" );
+            System.out.println("");
+        }
+    }
+}
