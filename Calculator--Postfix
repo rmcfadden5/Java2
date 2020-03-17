@@ -1,0 +1,78 @@
+import javax.swing.JFrame;
+import java.io.*;
+import java.util.Scanner;
+import java.util.Stack;
+import java.text.DecimalFormat;
+/**
+ * Write a description of class PostFixCalculator here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class PostFixCalculator
+{
+    //Stack st = new Stack();
+    Stack<Double> dub = new Stack<Double>();
+    Stack<Character> cha = new Stack<Character>();
+    public String good(String value)
+    {
+        //Split string here
+        String[] arr = value.split(" ");
+        int ctr = 0;
+        while(ctr < arr.length)
+        {       
+            if (arr[ctr].equals("*") || arr[ctr].equals("+") ||
+            arr[ctr].equals("/") || arr[ctr].equals("-"))
+            {
+                //pop two
+                double right = dub.pop();
+                double left = dub.pop();
+                if(arr[ctr].equals("*"))
+                { 
+                    double result = right * left; 
+                    dub.push(result);
+                    //break;
+                }
+                if(arr[ctr].equals("+"))
+                { 
+                    double result = right+left;  
+                    dub.push(result);
+                    //break;
+                }
+                if(arr[ctr].equals("/"))
+                {  
+                    double result = left/right;                     
+                    dub.push(result);
+                    //break;
+                }
+                if(arr[ctr].equals("-"))
+                { 
+                    //double result = Double.parseDouble(right) * Double.parseDouble(left); 
+                    double result = left-right;                     
+                    dub.push(result);
+                    //break;
+                }
+            }
+            else if (arr[ctr].equals("%"))
+            {
+                //pop one 
+                double pvalue = dub.pop();
+                double result = pvalue / 100;
+                dub.push(result);
+                //break;
+            }
+            else
+            {
+                //reading number
+                double val = Double.parseDouble(arr[ctr]);                    
+                dub.push(val);
+            }
+            ctr++;
+        }
+        double result = dub.pop();
+        DecimalFormat format = new DecimalFormat("0.00");
+        String answer = format.format(result);
+        //String answer = String.valueOf(result);      
+        return answer;
+    }
+}
